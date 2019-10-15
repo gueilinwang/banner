@@ -7,20 +7,25 @@ body {
   position: relative;
 }
 
-.banner .closed {
-  height: 80px;
-}
-
 .opened {
-  transition: all 1s;
   height: 300px;
   overflow: hidden;
 }
+.opening.transition,
+.opened.transition {
+  height: 300px;
+  overflow: hidden;
+  transition: all 1s;
+}
 
 .closed {
+  height: 80px;
+  overflow: hidden;
+}
+.closing.transition,
+.closed.transition {
   transition: all 1s;
   height: 80px;
-
   overflow: hidden;
 }
 
@@ -28,13 +33,23 @@ body {
   position: relative;
 }
 
+.banner.closing > .wrap,
 .banner.closed > .wrap {
+  top: -300px;
+}
+.banner.closed.transition > .wrap,
+.banner.closing.transition > .wrap {
   top: -300px;
   transition: all 1s;
 }
 
+.banner.opening > .wrap,
 .banner.opened > .wrap {
-  /* top: -300px; */
+  top: 0px;
+}
+.banner.opening.transition > .wrap,
+.banner.opened.transition > .wrap {
+  top: 0px;
   transition: all 1s;
 }
 
@@ -62,7 +77,22 @@ body {
   border-width: 0 3px 3px;
   border-color: transparent transparent #a3a3a3;
 }
-.btn:hover,
-.btn:hover::after {
+.btn.down::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin: 2px;
+  border-style: solid;
+  border-width: 3px 3px 0;
+  border-color: #a3a3a3 transparent transparent;
+}
+.btn:hover {
   color: white;
+}
+.btn:hover::after {
+  border-color: transparent transparent white;
+}
+.btn.down:hover::after {
+  border-color: white transparent transparent;
 }

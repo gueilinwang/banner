@@ -24,52 +24,85 @@
   Module.prototype.init = function() {
     let opt = this.option;
     let banner = document.querySelector(".banner");
-    let btn = document.querySelector(".btn");
+
     function changeName(name) {
-      if (name === opt.button.closeText) {
-        $(".btn").text(opt.button.openText);
+      if (!opt.transition) {
+        //判斷是不是有transition效果,沒有transition效果
+        if (name === opt.button.closeText) {
+          $(".btn").text(opt.button.openText);
+          $(".banner")
+            .toggleClass(opt.class.opened)
+            .toggleClass(opt.class.closed);
+        } else {
+          $(".btn").text(opt.button.closeText);
+          $(".banner")
+            .toggleClass(opt.class.closed)
+            .toggleClass(opt.class.opened);
+        }
       } else {
-        $(".btn").text(opt.button.closeText);
+        if (name === opt.button.closeText) {
+          //有transition效果
+          $(".btn").text(opt.button.openText);
+          $(".banner")
+            .toggleClass(opt.class.opened)
+            .toggleClass(opt.class.closing);
+        } else {
+          $(".btn").text(opt.button.closeText);
+          $(".banner")
+            .toggleClass(opt.class.closed)
+            .toggleClass(opt.class.opening);
+        }
+        $(".banner").on("transitionstart", function() {
+          let interval = setInterval(opt.whenTransition, 200);
+          $(this).on("transitionend", function() {
+            if (banner.className.includes("closing")) {
+              $(".banner")
+                .toggleClass("closing")
+                .toggleClass("closed");
+            } else if (banner.className.includes("opening")) {
+              $(".banner")
+                .toggleClass("opening")
+                .toggleClass("opened");
+            }
+            clearInterval(interval);
+          });
+        });
       }
     }
     function closeBanner() {
-      $(".banner").toggleClass(opt.class.opened);
-      $(".banner").toggleClass(opt.class.closing);
-      let a = setInterval(opt.whenTransition, 300);
+      $(".btn").toggleClass("down");
       changeName($(".btn").text());
-      $(".banner").toggleClass(opt.class.closing);
-      $(".banner").toggleClass(opt.class.closed);
-      setTimeout(() => {
-        clearInterval(a);
-      }, 2000);
     }
     function openBanner() {
-      $(".banner").toggleClass(opt.class.closed);
-      $(".banner").toggleClass(opt.class.opening);
+      $(".btn").toggleClass("down");
       changeName($(".btn").text());
-      $(".banner").toggleClass(opt.class.opening);
-      $(".banner").toggleClass(opt.class.opened);
     }
-
+    //判斷一開始banner是打開還是關閉
     if (opt.openAtStart) {
-      $(".banner").addClass("opened");
+      $(".banner").addClass("opened transition");
       let bannerBtn = `<div class="${opt.button.class}">${opt.button.closeText}</div>`;
       $(".wrap").after(bannerBtn);
       if (opt.autoToggle) {
+        //判斷是否需要自動開合
         let time = typeof opt.autoToggle === "boolean" ? 0 : opt.autoToggle;
         setTimeout(closeBanner, time);
       }
     } else {
-      $(".banner").addClass("closed");
+      $(".banner").addClass("closed transition");
       let bannerBtn = `<div class="${opt.button.class}">${opt.button.openText}</div>`;
       $(".wrap").after(bannerBtn);
+      $(".btn").addClass("down");
       if (opt.autoToggle) {
         let time = typeof opt.autoToggle === "boolean" ? 0 : opt.autoToggle;
         setTimeout(openBanner, time);
       }
     }
+    if (!opt.transition) {
+      //判斷是否有transition效果
+      $(".banner").removeClass("transition");
+    }
+
     $(".btn").click(function() {
-      let btn = document.querySelector(".btn");
       if (banner.className.includes(opt.class.opened)) {
         closeBanner();
       } else if (banner.className.includes(opt.class.closed)) {
@@ -77,15 +110,15 @@
       }
     });
   };
+  Module.prototype.toggle = function() {};
+  Module.prototype.open = function() {};
+  Module.prototype.close = function() {};
 
   $.fn[ModuleName] = function(methods, options) {
-    console.log("this:", this);
     return this.each(function() {
       let $this = $(this);
       let module = $this.data(ModuleName);
-
       let opts = null;
-
       if (!!module) {
         if (typeof options === "string" && typeof options2 === "undefined") {
           module[options]();
