@@ -14,18 +14,23 @@
     whenClickCallback: function() {
       console.log("whenClickCallback");
     },
-
     // 設定一開始是否為開或合
     openAtStart: true, // [boolean] true | false
     // 設定啟動後是否要自動開或合，若設為false，就不要自勳開合；若為true是馬上自動開合；若為數字是幾毫秒之後開合
     autoToggle: true // [boolean|number] true | false | 3000
   };
 
+  function test() {
+    console.log("test");
+  }
+
   Module.prototype.init = function() {
     let opt = this.option;
     let banner = document.querySelector(".banner");
 
-    function changeName(name) {
+    function toggleBanner() {
+      let name = $(".btn").text();
+      $(".btn").toggleClass("down");
       if (!opt.transition) {
         //判斷是不是有transition效果,沒有transition效果
         if (name === opt.button.closeText) {
@@ -69,14 +74,7 @@
         });
       }
     }
-    function closeBanner() {
-      $(".btn").toggleClass("down");
-      changeName($(".btn").text());
-    }
-    function openBanner() {
-      $(".btn").toggleClass("down");
-      changeName($(".btn").text());
-    }
+
     //判斷一開始banner是打開還是關閉
     if (opt.openAtStart) {
       $(".banner").addClass("opened transition");
@@ -85,7 +83,7 @@
       if (opt.autoToggle) {
         //判斷是否需要自動開合
         let time = typeof opt.autoToggle === "boolean" ? 0 : opt.autoToggle;
-        setTimeout(closeBanner, time);
+        setTimeout(toggleBanner, time);
       }
     } else {
       $(".banner").addClass("closed transition");
@@ -94,7 +92,7 @@
       $(".btn").addClass("down");
       if (opt.autoToggle) {
         let time = typeof opt.autoToggle === "boolean" ? 0 : opt.autoToggle;
-        setTimeout(openBanner, time);
+        setTimeout(toggleBanner, time);
       }
     }
     if (!opt.transition) {
@@ -104,15 +102,170 @@
 
     $(".btn").click(function() {
       if (banner.className.includes(opt.class.opened)) {
-        closeBanner();
+        toggleBanner();
       } else if (banner.className.includes(opt.class.closed)) {
-        openBanner();
+        toggleBanner();
       }
     });
   };
-  Module.prototype.toggle = function() {};
-  Module.prototype.open = function() {};
-  Module.prototype.close = function() {};
+
+  Module.prototype.toggle = function() {
+    let opt = this.option;
+    let banner = document.querySelector(".banner");
+    function toggleBanner() {
+      let name = $(".btn").text();
+      $(".btn").toggleClass("down");
+      if (!opt.transition) {
+        //判斷是不是有transition效果,沒有transition效果
+        if (name === opt.button.closeText) {
+          $(".btn").text(opt.button.openText);
+          $(".banner")
+            .toggleClass(opt.class.opened)
+            .toggleClass(opt.class.closed);
+        } else {
+          $(".btn").text(opt.button.closeText);
+          $(".banner")
+            .toggleClass(opt.class.closed)
+            .toggleClass(opt.class.opened);
+        }
+      } else {
+        if (name === opt.button.closeText) {
+          //有transition效果
+          $(".btn").text(opt.button.openText);
+          $(".banner")
+            .toggleClass(opt.class.opened)
+            .toggleClass(opt.class.closing);
+        } else {
+          $(".btn").text(opt.button.closeText);
+          $(".banner")
+            .toggleClass(opt.class.closed)
+            .toggleClass(opt.class.opening);
+        }
+        $(".banner").on("transitionstart", function() {
+          let interval = setInterval(opt.whenTransition, 200);
+          $(this).on("transitionend", function() {
+            if (banner.className.includes("closing")) {
+              $(".banner")
+                .toggleClass("closing")
+                .toggleClass("closed");
+            } else if (banner.className.includes("opening")) {
+              $(".banner")
+                .toggleClass("opening")
+                .toggleClass("opened");
+            }
+            clearInterval(interval);
+          });
+        });
+      }
+    }
+    toggleBanner();
+  };
+  Module.prototype.open = function() {
+    let opt = this.option;
+    let banner = document.querySelector(".banner");
+    function toggleBanner() {
+      let name = $(".btn").text();
+      $(".btn").toggleClass("down");
+      if (!opt.transition) {
+        //判斷是不是有transition效果,沒有transition效果
+        if (name === opt.button.closeText) {
+          $(".btn").text(opt.button.openText);
+          $(".banner")
+            .toggleClass(opt.class.opened)
+            .toggleClass(opt.class.closed);
+        } else {
+          $(".btn").text(opt.button.closeText);
+          $(".banner")
+            .toggleClass(opt.class.closed)
+            .toggleClass(opt.class.opened);
+        }
+      } else {
+        if (name === opt.button.closeText) {
+          //有transition效果
+          $(".btn").text(opt.button.openText);
+          $(".banner")
+            .toggleClass(opt.class.opened)
+            .toggleClass(opt.class.closing);
+        } else {
+          $(".btn").text(opt.button.closeText);
+          $(".banner")
+            .toggleClass(opt.class.closed)
+            .toggleClass(opt.class.opening);
+        }
+        $(".banner").on("transitionstart", function() {
+          let interval = setInterval(opt.whenTransition, 200);
+          $(this).on("transitionend", function() {
+            if (banner.className.includes("closing")) {
+              $(".banner")
+                .toggleClass("closing")
+                .toggleClass("closed");
+            } else if (banner.className.includes("opening")) {
+              $(".banner")
+                .toggleClass("opening")
+                .toggleClass("opened");
+            }
+            clearInterval(interval);
+          });
+        });
+      }
+    }
+    if ($(".btn").text() === opt.button.openText) {
+      toggleBanner();
+    } else return;
+  };
+  Module.prototype.close = function() {
+    let opt = this.option;
+    let banner = document.querySelector(".banner");
+    function toggleBanner() {
+      let name = $(".btn").text();
+      $(".btn").toggleClass("down");
+      if (!opt.transition) {
+        //判斷是不是有transition效果,沒有transition效果
+        if (name === opt.button.closeText) {
+          $(".btn").text(opt.button.openText);
+          $(".banner")
+            .toggleClass(opt.class.opened)
+            .toggleClass(opt.class.closed);
+        } else {
+          $(".btn").text(opt.button.closeText);
+          $(".banner")
+            .toggleClass(opt.class.closed)
+            .toggleClass(opt.class.opened);
+        }
+      } else {
+        if (name === opt.button.closeText) {
+          //有transition效果
+          $(".btn").text(opt.button.openText);
+          $(".banner")
+            .toggleClass(opt.class.opened)
+            .toggleClass(opt.class.closing);
+        } else {
+          $(".btn").text(opt.button.closeText);
+          $(".banner")
+            .toggleClass(opt.class.closed)
+            .toggleClass(opt.class.opening);
+        }
+        $(".banner").on("transitionstart", function() {
+          let interval = setInterval(opt.whenTransition, 200);
+          $(this).on("transitionend", function() {
+            if (banner.className.includes("closing")) {
+              $(".banner")
+                .toggleClass("closing")
+                .toggleClass("closed");
+            } else if (banner.className.includes("opening")) {
+              $(".banner")
+                .toggleClass("opening")
+                .toggleClass("opened");
+            }
+            clearInterval(interval);
+          });
+        });
+      }
+    }
+    if ($(".btn").text() === opt.button.closeText) {
+      toggleBanner();
+    } else return;
+  };
 
   $.fn[ModuleName] = function(methods, options) {
     return this.each(function() {
