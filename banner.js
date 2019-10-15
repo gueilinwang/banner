@@ -20,9 +20,54 @@
     autoToggle: true // [boolean|number] true | false | 3000
   };
 
-  function test() {
-    console.log("test");
-  }
+  Module.prototype.toggleBanner = function() {
+    let opt = this.option;
+    let banner = document.querySelector(".banner");
+    let name = $(".btn").text();
+    $(".btn").toggleClass("down");
+    if (!opt.transition) {
+      //判斷是不是有transition效果,沒有transition效果
+      if (name === opt.button.closeText) {
+        $(".btn").text(opt.button.openText);
+        $(".banner")
+          .toggleClass(opt.class.opened)
+          .toggleClass(opt.class.closed);
+      } else {
+        $(".btn").text(opt.button.closeText);
+        $(".banner")
+          .toggleClass(opt.class.closed)
+          .toggleClass(opt.class.opened);
+      }
+    } else {
+      if (name === opt.button.closeText) {
+        //有transition效果
+        $(".btn").text(opt.button.openText);
+        $(".banner")
+          .toggleClass(opt.class.opened)
+          .toggleClass(opt.class.closing);
+      } else {
+        $(".btn").text(opt.button.closeText);
+        $(".banner")
+          .toggleClass(opt.class.closed)
+          .toggleClass(opt.class.opening);
+      }
+      $(".banner").on("transitionstart", function() {
+        let interval = setInterval(opt.whenTransition, 200);
+        $(this).on("transitionend", function() {
+          if (banner.className.includes("closing")) {
+            $(".banner")
+              .toggleClass("closing")
+              .toggleClass("closed");
+          } else if (banner.className.includes("opening")) {
+            $(".banner")
+              .toggleClass("opening")
+              .toggleClass("opened");
+          }
+          clearInterval(interval);
+        });
+      });
+    }
+  };
 
   Module.prototype.init = function() {
     let opt = this.option;
@@ -110,160 +155,19 @@
   };
 
   Module.prototype.toggle = function() {
-    let opt = this.option;
-    let banner = document.querySelector(".banner");
-    function toggleBanner() {
-      let name = $(".btn").text();
-      $(".btn").toggleClass("down");
-      if (!opt.transition) {
-        //判斷是不是有transition效果,沒有transition效果
-        if (name === opt.button.closeText) {
-          $(".btn").text(opt.button.openText);
-          $(".banner")
-            .toggleClass(opt.class.opened)
-            .toggleClass(opt.class.closed);
-        } else {
-          $(".btn").text(opt.button.closeText);
-          $(".banner")
-            .toggleClass(opt.class.closed)
-            .toggleClass(opt.class.opened);
-        }
-      } else {
-        if (name === opt.button.closeText) {
-          //有transition效果
-          $(".btn").text(opt.button.openText);
-          $(".banner")
-            .toggleClass(opt.class.opened)
-            .toggleClass(opt.class.closing);
-        } else {
-          $(".btn").text(opt.button.closeText);
-          $(".banner")
-            .toggleClass(opt.class.closed)
-            .toggleClass(opt.class.opening);
-        }
-        $(".banner").on("transitionstart", function() {
-          let interval = setInterval(opt.whenTransition, 200);
-          $(this).on("transitionend", function() {
-            if (banner.className.includes("closing")) {
-              $(".banner")
-                .toggleClass("closing")
-                .toggleClass("closed");
-            } else if (banner.className.includes("opening")) {
-              $(".banner")
-                .toggleClass("opening")
-                .toggleClass("opened");
-            }
-            clearInterval(interval);
-          });
-        });
-      }
-    }
-    toggleBanner();
+    this.toggleBanner();
   };
   Module.prototype.open = function() {
-    let opt = this.option;
-    let banner = document.querySelector(".banner");
-    function toggleBanner() {
-      let name = $(".btn").text();
-      $(".btn").toggleClass("down");
-      if (!opt.transition) {
-        //判斷是不是有transition效果,沒有transition效果
-        if (name === opt.button.closeText) {
-          $(".btn").text(opt.button.openText);
-          $(".banner")
-            .toggleClass(opt.class.opened)
-            .toggleClass(opt.class.closed);
-        } else {
-          $(".btn").text(opt.button.closeText);
-          $(".banner")
-            .toggleClass(opt.class.closed)
-            .toggleClass(opt.class.opened);
-        }
-      } else {
-        if (name === opt.button.closeText) {
-          //有transition效果
-          $(".btn").text(opt.button.openText);
-          $(".banner")
-            .toggleClass(opt.class.opened)
-            .toggleClass(opt.class.closing);
-        } else {
-          $(".btn").text(opt.button.closeText);
-          $(".banner")
-            .toggleClass(opt.class.closed)
-            .toggleClass(opt.class.opening);
-        }
-        $(".banner").on("transitionstart", function() {
-          let interval = setInterval(opt.whenTransition, 200);
-          $(this).on("transitionend", function() {
-            if (banner.className.includes("closing")) {
-              $(".banner")
-                .toggleClass("closing")
-                .toggleClass("closed");
-            } else if (banner.className.includes("opening")) {
-              $(".banner")
-                .toggleClass("opening")
-                .toggleClass("opened");
-            }
-            clearInterval(interval);
-          });
-        });
-      }
-    }
-    if ($(".btn").text() === opt.button.openText) {
-      toggleBanner();
+    let self = this;
+    if ($(".btn").text() === self.option.button.openText) {
+      self.toggleBanner();
     } else return;
   };
   Module.prototype.close = function() {
-    let opt = this.option;
-    let banner = document.querySelector(".banner");
-    function toggleBanner() {
-      let name = $(".btn").text();
-      $(".btn").toggleClass("down");
-      if (!opt.transition) {
-        //判斷是不是有transition效果,沒有transition效果
-        if (name === opt.button.closeText) {
-          $(".btn").text(opt.button.openText);
-          $(".banner")
-            .toggleClass(opt.class.opened)
-            .toggleClass(opt.class.closed);
-        } else {
-          $(".btn").text(opt.button.closeText);
-          $(".banner")
-            .toggleClass(opt.class.closed)
-            .toggleClass(opt.class.opened);
-        }
-      } else {
-        if (name === opt.button.closeText) {
-          //有transition效果
-          $(".btn").text(opt.button.openText);
-          $(".banner")
-            .toggleClass(opt.class.opened)
-            .toggleClass(opt.class.closing);
-        } else {
-          $(".btn").text(opt.button.closeText);
-          $(".banner")
-            .toggleClass(opt.class.closed)
-            .toggleClass(opt.class.opening);
-        }
-        $(".banner").on("transitionstart", function() {
-          let interval = setInterval(opt.whenTransition, 200);
-          $(this).on("transitionend", function() {
-            if (banner.className.includes("closing")) {
-              $(".banner")
-                .toggleClass("closing")
-                .toggleClass("closed");
-            } else if (banner.className.includes("opening")) {
-              $(".banner")
-                .toggleClass("opening")
-                .toggleClass("opened");
-            }
-            clearInterval(interval);
-          });
-        });
-      }
-    }
-    if ($(".btn").text() === opt.button.closeText) {
-      toggleBanner();
+    let self = this;
+
+    if ($(".btn").text() === self.option.button.closeText) {
+      self.toggleBanner();
     } else return;
   };
 
