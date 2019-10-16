@@ -17,7 +17,7 @@
     // 設定一開始是否為開或合
     openAtStart: true, // [boolean] true | false
     // 設定啟動後是否要自動開或合，若設為false，就不要自勳開合；若為true是馬上自動開合；若為數字是幾毫秒之後開合
-    autoToggle: true // [boolean|number] true | false | 3000
+    autoToggle: false // [boolean|number] true | false | 3000
   };
 
   Module.prototype.toggleBanner = function() {
@@ -28,40 +28,48 @@
     if (!opt.transition) {
       //判斷是不是有transition效果,沒有transition效果
       if (name === opt.button.closeText) {
+        //收合時
         $(".btn").text(opt.button.openText);
         $(".banner")
-          .toggleClass(opt.class.opened)
-          .toggleClass(opt.class.closed);
+          .removeClass(`opened ${opt.class.opened}`)
+          .addClass(`closed ${opt.class.closed}`);
       } else {
+        //展開時
         $(".btn").text(opt.button.closeText);
         $(".banner")
-          .toggleClass(opt.class.closed)
-          .toggleClass(opt.class.opened);
+          .removeClass(`closed ${opt.class.closed}`)
+          .addClass(`opened ${opt.class.opened}`);
       }
     } else {
       if (name === opt.button.closeText) {
         //有transition效果
         $(".btn").text(opt.button.openText);
         $(".banner")
-          .toggleClass(opt.class.opened)
-          .toggleClass(opt.class.closing);
+          .removeClass(`opened ${opt.class.opened}`)
+          .addClass(`closing ${opt.class.closing}`);
       } else {
         $(".btn").text(opt.button.closeText);
         $(".banner")
-          .toggleClass(opt.class.closed)
-          .toggleClass(opt.class.opening);
+          .removeClass(`closed ${opt.class.closed}`)
+          .addClass(`opening ${opt.class.opening}`);
       }
       $(".banner").on("transitionstart", function() {
         let interval = setInterval(opt.whenTransition, 200);
         $(this).on("transitionend", function() {
-          if (banner.className.includes("closing")) {
+          if (
+            banner.className.includes("closing") ||
+            banner.className.includes(opt.class.closing)
+          ) {
             $(".banner")
-              .toggleClass("closing")
-              .toggleClass("closed");
-          } else if (banner.className.includes("opening")) {
+              .removeClass(`closing ${opt.class.closing}`)
+              .addClass(`closed ${opt.class.closed}`);
+          } else if (
+            banner.className.includes("opening") ||
+            banner.className.includes(opt.class.opening)
+          ) {
             $(".banner")
-              .toggleClass("opening")
-              .toggleClass("opened");
+              .removeClass(`opening ${opt.class.opening}`)
+              .addClass(`opened ${opt.class.opened}`);
           }
           clearInterval(interval);
         });
@@ -70,74 +78,34 @@
   };
 
   Module.prototype.init = function() {
+    let self = this;
     let opt = this.option;
     let banner = document.querySelector(".banner");
-
-    function toggleBanner() {
-      let name = $(".btn").text();
-      $(".btn").toggleClass("down");
-      if (!opt.transition) {
-        //判斷是不是有transition效果,沒有transition效果
-        if (name === opt.button.closeText) {
-          $(".btn").text(opt.button.openText);
-          $(".banner")
-            .toggleClass(opt.class.opened)
-            .toggleClass(opt.class.closed);
-        } else {
-          $(".btn").text(opt.button.closeText);
-          $(".banner")
-            .toggleClass(opt.class.closed)
-            .toggleClass(opt.class.opened);
-        }
-      } else {
-        if (name === opt.button.closeText) {
-          //有transition效果
-          $(".btn").text(opt.button.openText);
-          $(".banner")
-            .toggleClass(opt.class.opened)
-            .toggleClass(opt.class.closing);
-        } else {
-          $(".btn").text(opt.button.closeText);
-          $(".banner")
-            .toggleClass(opt.class.closed)
-            .toggleClass(opt.class.opening);
-        }
-        $(".banner").on("transitionstart", function() {
-          let interval = setInterval(opt.whenTransition, 200);
-          $(this).on("transitionend", function() {
-            if (banner.className.includes("closing")) {
-              $(".banner")
-                .toggleClass("closing")
-                .toggleClass("closed");
-            } else if (banner.className.includes("opening")) {
-              $(".banner")
-                .toggleClass("opening")
-                .toggleClass("opened");
-            }
-            clearInterval(interval);
-          });
-        });
-      }
-    }
-
     //判斷一開始banner是打開還是關閉
     if (opt.openAtStart) {
-      $(".banner").addClass("opened transition");
-      let bannerBtn = `<div class="${opt.button.class}">${opt.button.closeText}</div>`;
+      $(".banner")
+        .addClass("opened transition")
+        .addClass(opt.class.opened);
+      let bannerBtn = `<div class="btn">${opt.button.closeText}</div>`;
+      $(".btn").addClass(opt.button.class);
       $(".wrap").after(bannerBtn);
       if (opt.autoToggle) {
         //判斷是否需要自動開合
         let time = typeof opt.autoToggle === "boolean" ? 0 : opt.autoToggle;
-        setTimeout(toggleBanner, time);
+        setTimeout(self.toggleBanner.bind(this), time);
       }
     } else {
-      $(".banner").addClass("closed transition");
-      let bannerBtn = `<div class="${opt.button.class}">${opt.button.openText}</div>`;
+      $(".banner")
+        .addClass("closed transition")
+        .addClass(opt.class.closed);
+      let bannerBtn = `<div class="btn">${opt.button.openText}</div>`;
       $(".wrap").after(bannerBtn);
-      $(".btn").addClass("down");
+      $(".btn")
+        .addClass("down")
+        .addClass(opt.button.class);
       if (opt.autoToggle) {
         let time = typeof opt.autoToggle === "boolean" ? 0 : opt.autoToggle;
-        setTimeout(toggleBanner, time);
+        setTimeout(self.toggleBanner.bind(this), time);
       }
     }
     if (!opt.transition) {
@@ -146,11 +114,7 @@
     }
 
     $(".btn").click(function() {
-      if (banner.className.includes(opt.class.opened)) {
-        toggleBanner();
-      } else if (banner.className.includes(opt.class.closed)) {
-        toggleBanner();
-      }
+      self.toggleBanner();
     });
   };
 
@@ -165,7 +129,6 @@
   };
   Module.prototype.close = function() {
     let self = this;
-
     if ($(".btn").text() === self.option.button.closeText) {
       self.toggleBanner();
     } else return;

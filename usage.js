@@ -17,13 +17,13 @@ $('.banner').banner({
 	},
 	// 設定模組在各狀態時的class
 	class: {
-		closed: 'closed', // [string]
+		closed:'closed123', // [string]
 		closing: 'closing', // [string]
 		opened: 'opened', // [string]
 		opening: 'opening' // [string]
 	},
 	// 是否要有transition效果
-	transition: true,
+	transition: false,
 	// 當有transition時，要執行的callback function
 	whenTransition: function() {
 		console.log('whenTransition');
