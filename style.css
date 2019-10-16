@@ -11,8 +11,7 @@ body {
   height: 300px;
   overflow: hidden;
 }
-.opening.transition,
-.opened.transition {
+.opening.transition {
   height: 300px;
   overflow: hidden;
   transition: all 1s;
@@ -22,8 +21,7 @@ body {
   height: 80px;
   overflow: hidden;
 }
-.closing.transition,
-.closed.transition {
+.closing.transition {
   transition: all 1s;
   height: 80px;
   overflow: hidden;
@@ -32,9 +30,8 @@ body {
 .wrap {
   position: relative;
 }
-
-.banner.closing > .wrap,
-.banner.closed > .wrap {
+.banner.closed > .wrap,
+.banner.closing > .wrap {
   top: -300px;
 }
 .banner.closed.transition > .wrap,
@@ -43,10 +40,6 @@ body {
   transition: all 1s;
 }
 
-.banner.opening > .wrap,
-.banner.opened > .wrap {
-  top: 0px;
-}
 .banner.opening.transition > .wrap,
 .banner.opened.transition > .wrap {
   top: 0px;

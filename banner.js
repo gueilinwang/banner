@@ -86,9 +86,10 @@
       $(".banner")
         .addClass("opened transition")
         .addClass(opt.class.opened);
+      console.log(opt.button.class);
       let bannerBtn = `<div class="btn">${opt.button.closeText}</div>`;
-      $(".btn").addClass(opt.button.class);
       $(".wrap").after(bannerBtn);
+      $(".btn").addClass(opt.button.class);
       if (opt.autoToggle) {
         //判斷是否需要自動開合
         let time = typeof opt.autoToggle === "boolean" ? 0 : opt.autoToggle;
@@ -98,11 +99,11 @@
       $(".banner")
         .addClass("closed transition")
         .addClass(opt.class.closed);
+
       let bannerBtn = `<div class="btn">${opt.button.openText}</div>`;
       $(".wrap").after(bannerBtn);
-      $(".btn")
-        .addClass("down")
-        .addClass(opt.button.class);
+      $(".btn").addClass(`down ${opt.button.class}`);
+
       if (opt.autoToggle) {
         let time = typeof opt.autoToggle === "boolean" ? 0 : opt.autoToggle;
         setTimeout(self.toggleBanner.bind(this), time);
