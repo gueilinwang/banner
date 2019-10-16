@@ -22,7 +22,6 @@
 
   Module.prototype.toggleBanner = function() {
     let opt = this.option;
-    let banner = document.querySelector(".banner");
     let name = $(".btn").text();
     $(".btn").toggleClass("down");
     if (!opt.transition) {
@@ -53,20 +52,14 @@
           .removeClass(`closed ${opt.class.closed}`)
           .addClass(`opening ${opt.class.opening}`);
       }
-      $(".banner").on("transitionstart", function() {
-        let interval = setInterval(opt.whenTransition, 200);
+      $(".wrap").on("transitionstart", function() {
+        let interval = setInterval(opt.whenTransition, 500);
         $(this).on("transitionend", function() {
-          if (
-            banner.className.includes("closing") ||
-            banner.className.includes(opt.class.closing)
-          ) {
+          if ($(".banner").hasClass("closing")) {
             $(".banner")
               .removeClass(`closing ${opt.class.closing}`)
               .addClass(`closed ${opt.class.closed}`);
-          } else if (
-            banner.className.includes("opening") ||
-            banner.className.includes(opt.class.opening)
-          ) {
+          } else if ($(".banner").hasClass("opening")) {
             $(".banner")
               .removeClass(`opening ${opt.class.opening}`)
               .addClass(`opened ${opt.class.opened}`);
@@ -86,7 +79,7 @@
       $(".banner")
         .addClass("opened transition")
         .addClass(opt.class.opened);
-      console.log(opt.button.class);
+
       let bannerBtn = `<div class="btn">${opt.button.closeText}</div>`;
       $(".wrap").after(bannerBtn);
       $(".btn").addClass(opt.button.class);

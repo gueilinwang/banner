@@ -39,9 +39,8 @@ body {
   top: -300px;
   transition: all 1s;
 }
-
-.banner.opening.transition > .wrap,
-.banner.opened.transition > .wrap {
+.banner.opened.transition > .wrap,
+.banner.opening.transition > .wrap {
   top: 0px;
   transition: all 1s;
 }
