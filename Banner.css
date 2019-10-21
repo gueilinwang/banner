@@ -1,0 +1,118 @@
+body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+body .banner {
+  width: 1200px;
+  position: relative;
+}
+
+body .banner.opened {
+  height: 300px;
+  overflow: hidden;
+}
+
+body .banner.closed {
+  height: 80px;
+  overflow: hidden;
+}
+
+body .banner.closed .wrap {
+  top: -300px;
+}
+
+body .banner.transition.opened .wrap {
+  top: 0px;
+  -webkit-transition: all 1s;
+  transition: all 1s;
+}
+
+body .banner.transition.opening {
+  height: 300px;
+  overflow: hidden;
+  -webkit-transition: all 1s;
+  transition: all 1s;
+}
+
+body .banner.transition.opening .wrap {
+  top: 0px;
+  -webkit-transition: all 1s;
+  transition: all 1s;
+}
+
+body .banner.transition.closed .wrap {
+  top: -300px;
+  -webkit-transition: all 1s;
+  transition: all 1s;
+}
+
+body .banner.transition.closing {
+  -webkit-transition: all 1s;
+  transition: all 1s;
+  height: 80px;
+  overflow: hidden;
+}
+
+body .banner.transition.closing .wrap {
+  top: -300px;
+  -webkit-transition: all 1s;
+  transition: all 1s;
+}
+
+body .banner .wrap {
+  position: relative;
+}
+
+body .banner .btn {
+  position: absolute;
+  right: 0;
+  bottom: 0px;
+  font-size: 13px;
+  padding: 2px 2px 2px 8px;
+  border: 1px solid black;
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #a3a3a3;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+body .banner .btn::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin: 2px;
+  border-style: solid;
+  border-width: 0 3px 3px;
+  border-color: transparent transparent #a3a3a3;
+}
+
+body .banner .btn.down::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin: 2px;
+  border-style: solid;
+  border-width: 3px 3px 0;
+  border-color: #a3a3a3 transparent transparent;
+}
+
+body .banner .btn.down::after:hover {
+  border-color: white transparent transparent;
+}
+
+body .banner .btn:hover {
+  color: white;
+}
+
+body .banner .btn:hover::after {
+  border-color: transparent transparent white;
+}
+/*# sourceMappingURL=Banner.css.map */
