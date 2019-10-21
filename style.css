@@ -30,8 +30,7 @@ body {
 .wrap {
   position: relative;
 }
-.banner.closed > .wrap,
-.banner.closing > .wrap {
+.banner.closed > .wrap {
   top: -300px;
 }
 .banner.closed.transition > .wrap,
