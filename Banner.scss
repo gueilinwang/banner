@@ -19,31 +19,31 @@ body {
       &.opened {
         .wrap {
           top: 0px;
-          transition: all 1s;
+          transition: top 1s;
         }
       }
       &.opening {
         height: 300px;
         overflow: hidden;
-        transition: all 1s;
+        transition: height 1s;
         .wrap {
           top: 0px;
-          transition: all 1s;
+          transition: top 1s;
         }
       }
       &.closed {
         .wrap {
           top: -300px;
-          transition: all 1s;
+          transition: top 1s;
         }
       }
       &.closing {
-        transition: all 1s;
+        transition: height 1s;
         height: 80px;
         overflow: hidden;
         .wrap {
           top: -300px;
-          transition: all 1s;
+          transition: top 1s;
         }
       }
     }

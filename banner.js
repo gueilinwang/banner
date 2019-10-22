@@ -53,7 +53,7 @@
           .addClass(`opening ${opt.class.opening}`);
       }
       $(".wrap").on("transitionstart", function() {
-        let interval = setInterval(opt.whenTransition, 500);
+        let interval = setInterval(opt.whenTransition, 100);
         $(this).on("transitionend", function() {
           if ($(".banner").hasClass("closing")) {
             $(".banner")

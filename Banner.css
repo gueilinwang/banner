@@ -28,40 +28,40 @@ body .banner.closed .wrap {
 
 body .banner.transition.opened .wrap {
   top: 0px;
-  -webkit-transition: all 1s;
-  transition: all 1s;
+  -webkit-transition: top 1s;
+  transition: top 1s;
 }
 
 body .banner.transition.opening {
   height: 300px;
   overflow: hidden;
-  -webkit-transition: all 1s;
-  transition: all 1s;
+  -webkit-transition: height 1s;
+  transition: height 1s;
 }
 
 body .banner.transition.opening .wrap {
   top: 0px;
-  -webkit-transition: all 1s;
-  transition: all 1s;
+  -webkit-transition: top 1s;
+  transition: top 1s;
 }
 
 body .banner.transition.closed .wrap {
   top: -300px;
-  -webkit-transition: all 1s;
-  transition: all 1s;
+  -webkit-transition: top 1s;
+  transition: top 1s;
 }
 
 body .banner.transition.closing {
-  -webkit-transition: all 1s;
-  transition: all 1s;
+  -webkit-transition: height 1s;
+  transition: height 1s;
   height: 80px;
   overflow: hidden;
 }
 
 body .banner.transition.closing .wrap {
   top: -300px;
-  -webkit-transition: all 1s;
-  transition: all 1s;
+  -webkit-transition: top 1s;
+  transition: top 1s;
 }
 
 body .banner .wrap {
